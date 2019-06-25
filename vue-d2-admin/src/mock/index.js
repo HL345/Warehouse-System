@@ -6,5 +6,6 @@ const options = req(require.context('./api/', true, /\.js$/))
   .map(e => e.default)
 
 options.forEach(option => {
-  d2Mock.load(option)
+  // 关闭搞死人的mock
+  // d2Mock.load(option)
 })
