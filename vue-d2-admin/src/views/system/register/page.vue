@@ -38,6 +38,11 @@
                     <i slot="prepend" class="fa fa-keyboard-o"></i>
                   </el-input>
                 </el-form-item>
+                <el-form-item prop="password">
+                  <el-input type="password" v-model="formLogin.passwordAgain" placeholder="再次输入密码">
+                    <i slot="prepend" class="fa fa-keyboard-o"></i>
+                  </el-input>
+                </el-form-item>
                 <el-form-item prop="code">
                   <el-input type="text" v-model="formLogin.code" placeholder="- - - -">
                     <template slot="prepend">验证码</template>
@@ -46,14 +51,14 @@
                     </template>
                   </el-input>
                 </el-form-item>
-                <el-button size="default" @click="submit" type="primary" class="button-login">登录</el-button>
+                <el-button size="default" @click="submit" type="primary" class="button-login">注册</el-button>
               </el-form>
             </el-card>
             <p
               class="page-login--options"
               flex="main:justify cross:center">
               <span><d2-icon name="question-circle"/> 忘记密码</span>
-              <router-link tag="span" to="/register">注册用户</router-link>
+              <router-link tag="span" to="/login">登录页面</router-link>
             </p>
             <!-- 快速登录按钮 -->
             <el-button class="page-login--quick" size="default" type="info" @click="dialogVisible = true">
@@ -115,6 +120,7 @@ export default {
       formLogin: {
         username: 'admin',
         password: 'admin',
+        passwordAgain: 'admin',
         code: 'v9am'
       },
       // 校验

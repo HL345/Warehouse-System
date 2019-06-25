@@ -86,6 +86,12 @@ const frameOut = [
     path: '/login',
     name: 'login',
     component: _import('system/login')
+  },
+  // 注册
+  {
+    path: '/register',
+    name: 'register',
+    component: _import('system/register')
   }
 ]
 
