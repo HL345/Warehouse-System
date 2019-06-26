@@ -115,7 +115,7 @@ export default {
       formLogin: {
         username: '',
         password: '',
-        code: ''
+        code: 'v9am'
       },
       // 校验
       rules: {

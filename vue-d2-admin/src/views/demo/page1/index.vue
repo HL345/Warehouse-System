@@ -148,6 +148,7 @@ export default {
     },
     // 删除
     handleRowRemove ({ index, row }, done) {
+      // 发送row.id
       this.$message({
         message: '删除成功',
         type: 'success'
@@ -164,6 +165,16 @@ export default {
     fetchData () {
       this.loading = true
       this.loading = false
+      // BusinessTable1List({
+      //   ...this.pagination
+      // }).then(res => {
+      //   this.data = res.list
+      //   this.pagination.total = res.page.total
+      //   this.loading = false
+      // }).catch(err => {
+      //   console.log('err', err)
+      //   this.loading = false
+      // })
     },
 
     // 新增数据
