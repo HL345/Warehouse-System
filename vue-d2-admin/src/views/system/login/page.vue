@@ -29,8 +29,8 @@
             <el-card shadow="never">
               <el-form ref="loginForm" label-position="top" :rules="rules" :model="formLogin" size="default">
                 <el-form-item prop="username">
-                  <el-input type="text" v-model="formLogin.username" placeholder="用户名">
-                    <i slot="prepend" class="fa fa-user-circle-o"></i>
+                  <el-input type="text" v-model="formLogin.username" placeholder="邮箱">
+                    <i slot="prepend" class="fa fa-envelope"></i>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
@@ -113,19 +113,19 @@ export default {
       ],
       // 表单
       formLogin: {
-        username: 'admin',
-        password: 'admin',
-        code: 'v9am'
+        username: '',
+        password: '',
+        code: ''
       },
       // 校验
       rules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 4, max: 15, message: '长度需要在 4 到 15 个字符', trigger: 'blur' }
+          { min: 4, max: 25, message: '长度需要在 4 到 25 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 4, max: 15, message: '长度需要在 4 到 15 个字符', trigger: 'blur' }
+          { min: 4, max: 25, message: '长度需要在 4 到 25 个字符', trigger: 'blur' }
         ],
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' }
@@ -168,7 +168,7 @@ export default {
           // 注意 这里的演示没有传验证码
           // 具体需要传递的数据请自行修改代码
           this.login({
-            username: this.formLogin.username,
+            email: this.formLogin.username,
             password: this.formLogin.password
           })
             .then(() => {

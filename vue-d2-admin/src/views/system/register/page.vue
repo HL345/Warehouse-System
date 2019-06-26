@@ -28,6 +28,11 @@
           <div class="page-login--form">
             <el-card shadow="never">
               <el-form ref="loginForm" label-position="top" :rules="rules" :model="formLogin" size="default">
+                <el-form-item prop="email">
+                  <el-input type="text" v-model="formLogin.email" placeholder="邮箱">
+                    <i slot="prepend" class="fa fa-envelope"></i>
+                  </el-input>
+                </el-form-item>
                 <el-form-item prop="username">
                   <el-input type="text" v-model="formLogin.username" placeholder="用户名">
                     <i slot="prepend" class="fa fa-user-circle-o"></i>
@@ -137,6 +142,7 @@ export default {
       ],
       // 表单
       formLogin: {
+        email: '',
         username: '',
         password: '',
         checkPass: '',
@@ -144,13 +150,16 @@ export default {
       },
       // 校验
       rules: {
+        email: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' }
+        ],
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 4, max: 15, message: '长度需要在 4 到 15 个字符', trigger: 'blur' }
+          { min: 4, max: 25, message: '长度需要在 4 到 25 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 4, max: 15, message: '长度需要在 4 到 15 个字符', trigger: 'blur' }
+          { min: 4, max: 25, message: '长度需要在 4 到 25 个字符', trigger: 'blur' }
         ],
         checkPass: [
           { required: true, message: '请再次输入密码', trigger: 'blur' },
@@ -180,6 +189,7 @@ export default {
      * @param {Object} user 用户信息
      */
     handleUserBtnClick (user) {
+      this.formLogin.email = user.email
       this.formLogin.username = user.username
       this.formLogin.password = user.password
       this.formLogin.checkPass = user.checkPass
@@ -193,6 +203,7 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           AccountRegister({
+            email: this.formLogin.email,
             username: this.formLogin.username,
             password: this.formLogin.password
           }).then(res => {
