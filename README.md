@@ -7,35 +7,32 @@
 数据交互大部分由Ajax完成，默认前端发送表格数据，默认后端发送Json格式数据
 ## API:
 前部分为前端发送（后端接收）后部分为前端接收（后端发出）  
-`登陆  /api/login ` 
+### `登陆  /api/login ` 
 ***
 email(String)  
 password(String)  
-***
 ***
 uuid(int)  
 username(String)  
 token(定值String)  
 isSuccess(布尔)   
 ***
-`注册  /api/register ` 
+### `注册  /api/register ` 
 ***
 username(String)  
 email(String)  
 password(String)  
 ***
-***
 isSuccess(布尔)
 ***
-`删除表格数据  /api/table/remove ` 
+### `删除表格数据  /api/table/remove ` 
 ***
 // 多选则传数组(后期再考虑)  
 id(int)
 ***
-***
 isSuccess(布尔)
 ***
-`更新表格数据  /api/table/fetch`
+### `更新表格数据  /api/table/fetch`
 ***
 this.data = res.list  
 // 当前页  
@@ -44,7 +41,6 @@ currentPage(int)
 pageSize(int)  
 // 总条目数  
 total(int)  
-***
 ***
 // 数据  
 data(Json数组)例如：  
@@ -71,7 +67,7 @@ data(Json数组)例如：
 total(int)  
 isSuccess(布尔)
 ***
-`新增表格数据  /api/table/add ` 
+### `新增表格数据  /api/table/add ` 
 ***
 完整的一列数据，例如,数据库有date,name,address，则：  
 ```
@@ -81,7 +77,6 @@ isSuccess(布尔)
     address: '上海市普陀区金沙江路 1518 弄'
 }
 ```
-***
 ***
 isSuccess(布尔)
 ***
