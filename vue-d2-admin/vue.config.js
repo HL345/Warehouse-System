@@ -18,7 +18,10 @@ module.exports = {
     publicPath, // 和 publicPath 保持一致
     proxy: {
       '/api': {
-        target: 'http://localhost:8090',
+        // 对接罗大佬的后端
+        // target: 'http://ip:8080/Program/api',
+        // 测试我的后端
+        target: 'http://localhost:8090/api',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
