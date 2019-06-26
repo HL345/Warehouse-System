@@ -101,14 +101,14 @@ export default {
           password: 'admin'
         },
         {
-          name: '编辑',
-          username: 'editor',
-          password: 'editor'
-        },
-        {
           name: '用户1',
           username: 'user1',
           password: 'user1'
+        },
+        {
+          name: '用户2',
+          username: 'user2',
+          password: 'user2'
         }
       ],
       // 表单

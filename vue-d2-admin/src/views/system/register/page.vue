@@ -38,8 +38,8 @@
                     <i slot="prepend" class="fa fa-keyboard-o"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item prop="password">
-                  <el-input type="password" v-model="formLogin.passwordAgain" placeholder="再次输入密码">
+                <el-form-item prop="checkPass">
+                  <el-input type="password" v-model="formLogin.checkPass" placeholder="再次输入密码">
                     <i slot="prepend" class="fa fa-keyboard-o"></i>
                   </el-input>
                 </el-form-item>
@@ -62,7 +62,7 @@
             </p>
             <!-- 快速登录按钮 -->
             <el-button class="page-login--quick" size="default" type="info" @click="dialogVisible = true">
-              快速选择用户（测试功能）
+              快速注册用户（测试功能）
             </el-button>
           </div>
         </div>
@@ -74,7 +74,7 @@
       </div>
     </div>
     <el-dialog
-      title="快速选择用户"
+      title="快速注册用户"
       :visible.sync="dialogVisible"
       width="400px">
       <el-row :gutter="10" style="margin: -20px 0px -10px 0px;">
@@ -91,9 +91,25 @@
 
 <script>
 import dayjs from 'dayjs'
-import { mapActions } from 'vuex'
+import { AccountRegister } from '@/api/sys.register.js'
 export default {
   data () {
+    const passCheck = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.formLogin.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
+    const codeCheck = (rule, value, callback) => {
+      if (value !== 'V9AM' && value !== 'v9am') {
+        callback(new Error('验证码不正确!'))
+      } else {
+        callback()
+      }
+    }
     return {
       timeInterval: null,
       time: dayjs().format('HH:mm:ss'),
@@ -103,25 +119,28 @@ export default {
         {
           name: '管理员',
           username: 'admin',
-          password: 'admin'
-        },
-        {
-          name: '编辑',
-          username: 'editor',
-          password: 'editor'
+          password: 'admin',
+          checkPass: 'admin'
         },
         {
           name: '用户1',
           username: 'user1',
-          password: 'user1'
+          password: 'user1',
+          checkPass: 'user1'
+        },
+        {
+          name: '用户2',
+          username: 'user2',
+          password: 'user2',
+          checkPass: 'user2'
         }
       ],
       // 表单
       formLogin: {
-        username: 'admin',
-        password: 'admin',
-        passwordAgain: 'admin',
-        code: 'v9am'
+        username: '',
+        password: '',
+        checkPass: '',
+        code: ''
       },
       // 校验
       rules: {
@@ -133,8 +152,13 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 4, max: 15, message: '长度需要在 4 到 15 个字符', trigger: 'blur' }
         ],
+        checkPass: [
+          { required: true, message: '请再次输入密码', trigger: 'blur' },
+          { validator: passCheck, trigger: 'blur' }
+        ],
         code: [
-          { required: true, message: '请输入验证码', trigger: 'blur' }
+          { required: true, message: '请输入验证码', trigger: 'blur' },
+          { validator: codeCheck, trigger: 'blur' }
         ]
       }
     }
@@ -148,9 +172,6 @@ export default {
     clearInterval(this.timeInterval)
   },
   methods: {
-    ...mapActions('d2admin/account', [
-      'login'
-    ]),
     refreshTime () {
       this.time = dayjs().format('HH:mm:ss')
     },
@@ -161,6 +182,7 @@ export default {
     handleUserBtnClick (user) {
       this.formLogin.username = user.username
       this.formLogin.password = user.password
+      this.formLogin.checkPass = user.checkPass
       this.submit()
     },
     /**
@@ -170,17 +192,20 @@ export default {
     submit () {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          // 登录
-          // 注意 这里的演示没有传验证码
-          // 具体需要传递的数据请自行修改代码
-          this.login({
+          AccountRegister({
             username: this.formLogin.username,
             password: this.formLogin.password
-          })
-            .then(() => {
-              // 重定向对象不存在则返回顶层路径
+          }).then(res => {
+            console.log(res)
+            if (res.isSuccess) {
+              this.$message.success('注册成功，前往登陆页面')
               this.$router.replace(this.$route.query.redirect || '/')
-            })
+            } else {
+              this.$message.error('注册失败，用户名已存在！')
+            }
+          }).catch(err => {
+            console.log(err)
+          })
         } else {
           // 登录表单校验失败
           this.$message.error('表单校验失败')

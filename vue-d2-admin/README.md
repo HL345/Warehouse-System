@@ -28,6 +28,10 @@ npm install
 ```
 npm run dev
 ```
+若没和后端联调，你需要在mock/index.js中取消下面的注释以登陆
+```
+// d2Mock.load(option)
+```
 ## 开发这个项目： 
 
 所有页面放置在src/view/中，system文件夹为系统文件不需更改，你可以尝试修改demo/page1/index.vue里的内容，这是项目中 页面/page1 的内容  
