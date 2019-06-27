@@ -5,8 +5,8 @@ export default [
     title: '页面',
     icon: 'folder-o',
     children: [
-      { path: '/page1', title: '页面 1' },
-      { path: '/page2', title: '页面 2' },
+      { path: '/page1', title: '商品数据' },
+      { path: '/page2', title: '用户信息' },
       { path: '/page3', title: '页面 3' }
     ]
   }

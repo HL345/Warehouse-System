@@ -38,29 +38,16 @@
               </el-col>
             </el-row>
           </el-tab-pane>
-          <el-tab-pane label="修改信息" name="second">
-            <el-form :model="userList">
-              <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
-                <el-col :span="8">  <el-input v-model="userList.email" placeholder="请输入用户名" type="text"></el-input></el-col>
-              </el-form-item>
-              <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
-                <el-col :span="8"><el-input v-model="userList.username" placeholder="请输入邮箱" type="email"></el-input></el-col>
-              </el-form-item>
-            </el-form>
-            <div class="grid-content bg-purple">
-              <el-button type="primary" @click="changePassword">保存</el-button>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="修改密码" name="third">
+          <el-tab-pane label="修改密码" name="second">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
               <el-form-item label="原密码" prop="pass" :label-width="formLabelWidth">
-                <el-col :span="8">  <el-input v-model="ruleForm.pass" placeholder="请输入原密码" type="password"></el-input></el-col>
+                <el-col :span="8">  <el-input v-model="ruleForm.pass" placeholder="请输入原密码" type="password" show-password></el-input></el-col>
               </el-form-item>
               <el-form-item label="新密码" prop="newpass" :label-width="formLabelWidth">
-                <el-col :span="8"><el-input v-model="ruleForm.newpass" placeholder="请输入新密码" id="newkey" type="password"></el-input></el-col>
+                <el-col :span="8"><el-input v-model="ruleForm.newpass" placeholder="请输入新密码" id="newkey" type="password" show-password></el-input></el-col>
               </el-form-item>
               <el-form-item label="重复新密码" prop="checknewpass" :label-width="formLabelWidth">
-                <el-col :span="8">  <el-input v-model="ruleForm.checknewpass" placeholder="请再次输入新密码" id='newkey1' type="password"></el-input></el-col>
+                <el-col :span="8">  <el-input v-model="ruleForm.checknewpass" placeholder="请再次输入新密码" id='newkey1' type="password" show-password></el-input></el-col>
               </el-form-item>
             </el-form>
             <div class="grid-content bg-purple">
@@ -74,7 +61,8 @@
 </template>
 <script>
 import cookies from '@/libs/util.cookies'
-import { GetUsetInfo } from '@/api/user'
+import { GetUserInfo, UpdateUserInfo, UpdateUserPass } from '@/api/user'
+import { mapActions } from 'vuex'
 
 export default {
   data () {
@@ -140,14 +128,52 @@ export default {
     }
   },
   methods: {
+    ...mapActions('d2admin/account', [
+      'logout'
+    ]),
     // tab切换
     handleClick (tab, event) {
       console.log(tab, event)
     },
     // 修改密码
     changePassword () {
-      GetUsetInfo({
-        id: cookies.get('uuid')
+      UpdateUserPass({
+        id: cookies.get('uuid'),
+        password: this.ruleForm.newpass
+      }).then(res => {
+        if (res.isSuccess) {
+          this.userList.id = res.id
+          this.userList.email = res.email
+          this.userList.username = res.username
+          this.userList.date = res.date
+          this.userList.is_admin = res.is_admin
+          this.$message({
+            message: '成功修改用户密码',
+            type: 'success'
+          })
+          this.logout({
+            confirm: false
+          })
+        } else {
+          this.$message({
+            message: '修改密码失败',
+            type: 'warning'
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+        this.$message({
+          message: '获取用户信息失败',
+          type: 'warning'
+        })
+      })
+    },
+    // 修改信息
+    changeUserInfo () {
+      UpdateUserInfo({
+        id: cookies.get('uuid'),
+        email: this.userList.email,
+        username: this.userList.username
       }).then(res => {
         this.userList.id = res.id
         this.userList.email = res.email
@@ -155,7 +181,7 @@ export default {
         this.userList.date = res.date
         this.userList.is_admin = res.is_admin
         this.$message({
-          message: '成功获取用户信息',
+          message: '成功修改用户信息',
           type: 'success'
         })
       }).catch(err => {
@@ -166,6 +192,29 @@ export default {
         })
       })
     }
+  },
+  mounted () {
+    console.log(cookies.get('uuid'))
+    GetUserInfo({
+      id: cookies.get('uuid')
+    }).then(res => {
+      console.log(res)
+      this.userList.id = res.id
+      this.userList.email = res.email
+      this.userList.username = res.username
+      this.userList.date = res.reg_date
+      this.userList.is_admin = res.is_admin
+      this.$message({
+        message: '成功获取用户信息',
+        type: 'success'
+      })
+    }).catch(err => {
+      console.log(err)
+      this.$message({
+        message: '获取用户信息失败',
+        type: 'warning'
+      })
+    })
   }
 }
 </script>
@@ -174,4 +223,7 @@ export default {
 .el-card {
   margin: 5px 5px 5px 5px;
 }
+.grid-content bg-purple{
+    margin-left: 130px;
+  }
 </style>

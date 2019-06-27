@@ -81,15 +81,13 @@ export default {
           sortable: true
         },
         {
-          title: '生成厂家',
+          title: '生产厂家',
           key: 'manufacture',
-          width: 120,
           sortable: true
         },
         {
-          title: '生产日期',
+          title: '入库日期',
           key: 'date',
-          width: '180',
           sortable: true
         },
         {
@@ -118,12 +116,15 @@ export default {
       // 删除
       rowHandle: {
         remove: {
-          size: 'mini',
+          icon: 'el-icon-delete',
+          size: 'small',
+          fixed: 'right',
           confirm: true
         },
         edit: {
-          size: 'mini',
-          confirm: false
+          icon: 'el-icon-edit',
+          size: 'small',
+          fixed: 'right'
         }
       },
       // 分页
@@ -254,7 +255,6 @@ export default {
             message: '删除失败',
             type: 'erro'
           })
-          this.fetchData()
         }
       })
     },
@@ -312,6 +312,7 @@ export default {
               message: '保存成功',
               type: 'success'
             })
+            this.fetchData()
             this.formOptions.saveLoading = false
           } else {
             this.$message({
@@ -335,8 +336,6 @@ export default {
     handleRowEdit ({ index, row }, done) {
       this.formOptions.saveLoading = true
       setTimeout(() => {
-        console.log(index)
-        console.log(row)
         Edit(
           row
         ).then(res => {
@@ -399,6 +398,16 @@ export default {
   },
   mounted () {
     this.fetchData()
+    this.$message({
+      message: '获取到' + this.pagination.pageSize + '条数据',
+      type: 'success'
+    })
   }
 }
 </script>
+
+<style>
+  .el-button+.el-button{
+    margin-left: 0;
+  }
+</style>

@@ -39,12 +39,12 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input type="password" v-model="formLogin.password" placeholder="密码">
+                  <el-input type="password" v-model="formLogin.password" placeholder="密码" show-password>
                     <i slot="prepend" class="fa fa-keyboard-o"></i>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="checkPass">
-                  <el-input type="password" v-model="formLogin.checkPass" placeholder="再次输入密码">
+                  <el-input type="password" v-model="formLogin.checkPass" placeholder="再次输入密码" show-password>
                     <i slot="prepend" class="fa fa-keyboard-o"></i>
                   </el-input>
                 </el-form-item>
