@@ -32,3 +32,11 @@ export function Search (data) {
     data: qs.stringify(data)
   })
 }
+
+export function Edit (data) {
+  return request({
+    url: '/table/edit',
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}

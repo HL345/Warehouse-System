@@ -6,6 +6,13 @@
             :data="data"
             :options="options"
             :loading="loading"
+            :form-options="formOptions"
+            ref="d2Crud"
+            @dialog-open="handleDialogOpen"
+            @dialog-cancel="handleDialogCancel"
+
+            :pagination="pagination"
+            @pagination-current-change="paginationCurrentChange"
 
             selection-row
             @selection-change="handleSelectionChange"
@@ -13,16 +20,13 @@
             :rowHandle="rowHandle"
             @row-remove="handleRowRemove"
 
-            :pagination="pagination"
-            @pagination-current-change="paginationCurrentChange"
+            edit-title="我的修改"
+            :edit-template="editTemplate"
+            @row-edit="handleRowEdit"
 
-            ref="d2Crud"
             add-title="我的新增"
             :add-template="addTemplate"
-            :form-options="formOptions"
-            @dialog-open="handleDialogOpen"
             @row-add="handleRowAdd"
-            @dialog-cancel="handleDialogCancel"
     >
       <el-button slot="header" style="margin-bottom: 5px" @click="addRow">新增</el-button>
       <el-button slot="header" style="margin-bottom: 5px" @click="removeRowSelected">删除所选项</el-button>
@@ -39,7 +43,7 @@
 </template>
 
 <script>
-import { Fetch, Add, Remove, Search } from '@/api/table'
+import { Fetch, Add, Remove, Search, Edit } from '@/api/table'
 
 export default {
   name: 'page1',
@@ -115,6 +119,10 @@ export default {
       rowHandle: {
         remove: {
           size: 'mini',
+          confirm: true
+        },
+        edit: {
+          size: 'mini',
           confirm: false
         }
       },
@@ -155,6 +163,36 @@ export default {
         period: {
           title: '保质期',
           value: '180'
+        }
+      },
+      editTemplate: {
+        name: {
+          title: '商品名',
+          value: ''
+        },
+        price: {
+          title: '价格',
+          value: ''
+        },
+        type: {
+          title: '类别',
+          value: ''
+        },
+        save: {
+          title: '库存',
+          value: ''
+        },
+        size: {
+          title: '重量',
+          value: ''
+        },
+        manufacture: {
+          title: '生产厂家',
+          value: ''
+        },
+        period: {
+          title: '保质期',
+          value: ''
         }
       },
       formOptions: {
@@ -245,7 +283,7 @@ export default {
       })
     },
 
-    // 新增数据
+    // 提示框
     handleDialogOpen ({ mode }) {
       this.$message({
         message: '打开模态框，模式为：' + mode,
@@ -258,8 +296,9 @@ export default {
         mode: 'add'
       })
     },
-    // Axios row给后端
+    // 新增数据
     handleRowAdd (row, done) {
+      // Axios row给后端
       this.formOptions.saveLoading = true
       setTimeout(() => {
         console.log(row)
@@ -277,8 +316,43 @@ export default {
           } else {
             this.$message({
               message: '保存失败',
+              type: 'warning'
+            })
+            this.formOptions.saveLoading = false
+          }
+        }).catch(err => {
+          console.log('err', err)
+          this.loading = false
+        })
+        // done可以传入一个对象来修改提交的某个字段
+        done({
+          // address: '我是通过done事件传入的数据！'
+        })
+        this.formOptions.saveLoading = false
+      }, 300)
+    },
+    // 编辑数据
+    handleRowEdit ({ index, row }, done) {
+      this.formOptions.saveLoading = true
+      setTimeout(() => {
+        console.log(index)
+        console.log(row)
+        Edit(
+          row
+        ).then(res => {
+          if (res.isSuccess) {
+            this.$message({
+              message: '编辑成功',
               type: 'success'
             })
+            this.formOptions.saveLoading = false
+            this.fetchData()
+          } else {
+            this.$message({
+              message: '编辑失败',
+              type: 'warning'
+            })
+            this.formOptions.saveLoading = false
           }
         }).catch(err => {
           console.log('err', err)
@@ -312,7 +386,7 @@ export default {
           message: '查询到' + this.pagination.total + '条数据',
           type: 'success'
         })
-        this.loading = true
+        this.loading = false
       }).catch(err => {
         console.log('err', err)
         this.$message({

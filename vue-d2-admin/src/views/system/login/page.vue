@@ -63,7 +63,7 @@
         </div>
         <div class="page-login--content-footer">
           <p class="page-login--content-footer-copyright">
-            Copyright <d2-icon name="copyright"/> 2018 D2 Projects 开源组织出品 <a href="https://github.com/FairyEver">@FairyEver</a>
+            Copyright <d2-icon name="copyright"/>敲代码还累不如实训队 Front end is Built by JIN Wenjie
           </p>
         </div>
       </div>
@@ -203,7 +203,7 @@ export default {
   }
   // 时间
   .page-login--layer-time {
-    font-size: 24em;
+    font-size: 20em;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.03);
     overflow: hidden;

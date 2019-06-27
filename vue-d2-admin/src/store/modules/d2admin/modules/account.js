@@ -36,6 +36,8 @@ export default {
                 type: 'success',
                 duration: 5 * 1000
               })
+              util.cookies.set('uuid', res.uuid)
+              util.cookies.set('token', res.token)
             } else {
               Message({
                 message: '登录失败，请检查你的账号和密码',
@@ -43,8 +45,6 @@ export default {
                 duration: 5 * 1000
               })
             }
-            util.cookies.set('uuid', res.uuid)
-            util.cookies.set('token', res.token)
             // 设置 vuex 用户信息
             await dispatch('d2admin/user/set', {
               name: res.username

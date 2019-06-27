@@ -19,7 +19,7 @@ module.exports = {
     proxy: {
       '/api': {
         // 对接罗大佬的后端
-        target: 'http://192.168.43.48:8080/Program/api',
+        target: 'http://172.20.10.2:8080/Program/api',
         // 测试我的后端
         // target: 'http://localhost:8090/api',
         ws: true,
