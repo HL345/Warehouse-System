@@ -9,7 +9,7 @@ process.env.VUE_APP_VERSION = require('./package.json').version
 process.env.VUE_APP_BUILD_TIME = require('dayjs')().format('YYYY-M-D HH:mm:ss')
 
 // 基础路径 注意发布之前要先修改这里
-let publicPath = '/'
+let publicPath = './'
 
 module.exports = {
   publicPath, // 根据你的实际情况更改这里
@@ -19,9 +19,9 @@ module.exports = {
     proxy: {
       '/api': {
         // 对接罗大佬的后端
-        target: 'http://172.20.10.2:8080/Program/api',
+        // target: 'http://172.20.10.2:8080/Program/api',
         // 测试我的后端
-        // target: 'http://localhost:8090/api',
+        target: 'http://localhost:8090/Program/api',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
