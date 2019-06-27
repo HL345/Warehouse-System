@@ -151,7 +151,8 @@ export default {
       // 校验
       rules: {
         email: [
-          { required: true, message: '请输入邮箱', trigger: 'blur' }
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
         ],
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -159,10 +160,11 @@ export default {
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 4, max: 25, message: '长度需要在 4 到 25 个字符', trigger: 'blur' }
+          { min: 4, max: 25, message: '长度需要在 4 到 25 个字符', trigger: 'blur' },
         ],
         checkPass: [
           { required: true, message: '请再次输入密码', trigger: 'blur' },
+          { min: 4, max: 25, message: '长度需要在 4 到 25 个字符', trigger: 'blur' },
           { validator: passCheck, trigger: 'blur' }
         ],
         code: [
